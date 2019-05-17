@@ -1,0 +1,16 @@
+{
+  "name": "3_loading",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.0.1",
+    "mongodb": "^3.2.4",
+    "mongoose": "^5.5.9"
+  }
+}

@@ -1,0 +1,3 @@
+sudo -u postgres psql
+
+scp grupobd21@192.168.91.53:/home/grupobd21/trab_bd2/base_de_dados/customers.json "C:\Users\Matheus\Documents\IME - Graduacao\7 periodo\BD 2\Desempenho de SGBD NoSQL\2_Tratamento\2_Consolidado\customers1.json"

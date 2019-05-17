@@ -1,0 +1,8 @@
+1_Extração/__MACOSX
+1_Extração/*.csv
+
+2_Tratamento/2_Consolidado/*.json
+
+3_loading/node_modules
+
+credentials/
