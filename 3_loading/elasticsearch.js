@@ -43,13 +43,13 @@ const insert_sync = (start, n, data) => {
         client.bulk({ 
             body: part 
         }, (err, res) => {
-        if (res.errors) {
-            console.log("Erro na inserção desse bloco...")
-        } else {
-            console.log(`Sucesso (${(start+n)/data.length*100}%)`)
-            insert_sync(start+n, n, data)
-        }
-    })
+            if (res.errors) {
+                console.log("Erro na inserção desse bloco...")
+            } else {
+                console.log(`Sucesso (${(start+n)/data.length*100}%)`)
+                insert_sync(start+n, n, data)
+            }
+        })
     }
 }
 
