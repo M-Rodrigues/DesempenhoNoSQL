@@ -12,6 +12,7 @@ const files = [
 ]
 
 const load_files = (id, files) => {
+    id--
     if (id < files.length) {
         console.log(`Importando arquivo ${files[id]} (${new Date().toUTCString()})`)
         fs.readFile(
@@ -27,7 +28,6 @@ const load_files = (id, files) => {
             })
     }
 }
-
 
 const insert_data_elastic = (data) => {
     data = JSON.parse(data)
@@ -67,4 +67,5 @@ const build_bulk_body = (data) => {
     return body
 }
 
-load_files(2, files);
+// Para cada arquivo, o script foi rodado indicando o número do arquivo
+load_files(3, files);
