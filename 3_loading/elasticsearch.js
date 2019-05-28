@@ -61,7 +61,7 @@ const build_bulk_body = (data) => {
         let id = parseInt(element.c_name.substring(9,18))
     
         // action description
-        body.push({ index:  { _index: 'customer', _id: id } })
+        body.push({ index:  { _index: 'i_customer', _id: id } })
         // the document
         body.push(element)
     });
@@ -70,4 +70,4 @@ const build_bulk_body = (data) => {
 }
 
 // Para cada arquivo, o script foi rodado indicando o número do arquivo
-load_files(3, files);
+load_files(1, files);

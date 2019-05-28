@@ -13,25 +13,6 @@ GET customer/_search?pretty
   }
 }
 
-GET customer/_search?pretty
-{
-  "query": {
-    "nested": {
-      "path": "lineorder",
-      "query": {
-        "bool": {
-          "must": [
-            {
-              "match": {
-                "lineorder.lo_discount": 2
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
-}
 
 PUT customer
 {
@@ -45,10 +26,18 @@ PUT customer
         "type": "text",
         "fielddata": true
       },
+      "c_region": {
+        "type": "text",
+            "fielddata": true
+      },
       "lineorder": {
         "type": "nested",
         "properties": {
           "supplier.s_nation": {
+            "type": "text",
+            "fielddata": true
+          },
+          "supplier.s_region": {
             "type": "text",
             "fielddata": true
           },
@@ -68,33 +57,4 @@ PUT customer
       }
     }
   }
-}
-
-
-PUT customer
-{
-"mappings": {
-  "properties": {
-    "c_nation": {
-      "type": "text",
-      "fielddata": true
-    },
-    "c_city": {
-      "type": "text",
-      "fielddata": true
-    },
-    "lineorder": {
-      "type": "nested"
-    }
-  }
-}
-}
-
-"mappings": {
-"properties": {
-  "s_nation": {
-    "type": "text",
-    "fileddata": true
-  }
-}
 }

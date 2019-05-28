@@ -11,11 +11,6 @@ POST /customer/_search?pretty
               "must": [
                 {
                   "term": {
-                    "lineorder.orderdate.d_weeknuminyear": 6
-                  }
-                },
-                {
-                  "term": {
                     "lineorder.orderdate.d_year": 1994
                   }
                 },
@@ -54,11 +49,6 @@ POST /customer/_search?pretty
               "must": [
                 {
                   "term": {
-                    "lineorder.orderdate.d_weeknuminyear": 6
-                  }
-                },
-                {
-                  "term": {
                     "lineorder.orderdate.d_year": 1994
                   }
                 },
@@ -94,3 +84,9 @@ POST /customer/_search?pretty
   },
   "size": 0
 }
+
+{
+  "term": {
+    "lineorder.orderdate.d_weeknuminyear": 6
+  }
+},

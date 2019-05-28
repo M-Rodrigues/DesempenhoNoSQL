@@ -60,7 +60,7 @@ POST /customer/_search?pretty
               "terms": {
                 "field": "lineorder.orderdate.d_year",
                 "order": {
-                  "_term": "asc"
+                  "_key": "asc"
                 }
               },
               "aggs": {
@@ -68,7 +68,7 @@ POST /customer/_search?pretty
                   "terms": {
                     "field": "lineorder.part.p_brand1",
                     "order": {
-                      "_term": "asc"
+                      "_key": "asc"
                     }
                   },
                   "aggs": {
