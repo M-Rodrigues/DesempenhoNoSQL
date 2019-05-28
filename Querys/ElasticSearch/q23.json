@@ -1,0 +1,84 @@
+POST /customer/_search?pretty
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "nested": {
+          "inner_hits": {},
+          "path": "lineorder",
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "term": {
+                    "lineorder.part.p_brand1": "MFGR#2221"
+                  }
+                },
+                {
+                  "term": {
+                    "lineorder.supplier.s_region": "EUROPE"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "aggs": {
+    "lineorder": {
+      "nested": {
+        "path": "lineorder"
+      },
+      "aggs": {
+        "only_loc": {
+          "filter": {
+            "bool": {
+              "must": [
+                {
+                  "term": {
+                    "lineorder.part.p_brand1": "MFGR#2221"
+                  }
+                },
+                {
+                  "term": {
+                    "lineorder.supplier.s_region": "EUROPE"
+                  }
+                }
+              ]
+            }
+          },
+          "aggs": {
+            "group_by_year": {
+              "terms": {
+                "field": "lineorder.orderdate.d_year",
+                "order": {
+                  "_term": "asc"
+                }
+              },
+              "aggs": {
+                "group_by_brand": {
+                  "terms": {
+                    "field": "lineorder.part.p_brand1",
+                    "order": {
+                      "_term": "asc"
+                    }
+                  },
+                  "aggs": {
+                    "sum_revenue": {
+                      "sum": {
+                        "field": "lineorder.lo_revenue"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0
+}

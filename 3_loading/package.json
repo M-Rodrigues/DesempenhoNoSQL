@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@elastic/elasticsearch": "^7.0.1",
+    "@elastic/elasticsearch": "^7.1.0",
     "mongodb": "^3.2.4",
     "mongoose": "^5.5.9"
   }

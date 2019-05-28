@@ -1,0 +1,90 @@
+POST /customer/_search?pretty
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "nested": {
+          "inner_hits": {},
+          "path": "lineorder",
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "range": {
+                    "lineorder.part.p_brand1": {
+                      "gte": "MFGR#2221",
+                      "lte": "MFGR#2228"
+                    }
+                  }
+                },
+                {
+                  "term": {
+                    "lineorder.supplier.s_region": "ASIA"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "aggs": {
+    "lineorder": {
+      "nested": {
+        "path": "lineorder"
+      },
+      "aggs": {
+        "only_loc": {
+          "filter": {
+            "bool": {
+              "must": [
+                {
+                  "range": {
+                    "lineorder.part.p_brand1": {
+                      "gte": "MFGR#2221",
+                      "lte": "MFGR#2228"
+                    }
+                  }
+                },
+                {
+                  "term": {
+                    "lineorder.supplier.s_region": "ASIA"
+                  }
+                }
+              ]
+            }
+          },
+          "aggs": {
+            "group_by_year": {
+              "terms": {
+                "field": "lineorder.orderdate.d_year",
+                "order": {
+                  "_term": "asc"
+                }
+              },
+              "aggs": {
+                "group_by_brand": {
+                  "terms": {
+                    "field": "lineorder.part.p_brand1",
+                    "order": {
+                      "_term": "asc"
+                    }
+                  },
+                  "aggs": {
+                    "sum_revenue": {
+                      "sum": {
+                        "field": "lineorder.lo_revenue"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0
+}

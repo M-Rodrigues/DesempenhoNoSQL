@@ -1,0 +1,122 @@
+POST /customer/_search?pretty
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "term": {
+                "c_region": "ASIA"
+              }
+            },
+            {
+              "bool": {
+                "filter": {
+                  "nested": {
+                    "inner_hits": {},
+                    "path": "lineorder",
+                    "query": {
+                      "bool": {
+                        "must": [
+                          {
+                            "term": {
+                              "lineorder.supplier.s_region": "ASIA"
+                            }
+                          },
+                          {
+                            "range": {
+                              "lineorder.orderdate.d_year": {
+                                "gte": 1992,
+                                "lte": 1997
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "aggs": {
+    "c_nation": {
+      "terms": {
+        "field": "c_nation",
+        "order": {
+          "_term": "asc"
+        }
+      },
+      "aggs": {
+        "lineorder": {
+          "nested": {
+            "path": "lineorder"
+          },
+          "aggs": {
+            "only_loc": {
+              "filter": {
+                "bool": {
+                  "must": [
+                    {
+                      "term": {
+                        "lineorder.supplier.s_region": "ASIA"
+                      }
+                    },
+                    {
+                      "range": {
+                        "lineorder.orderdate.d_year": {
+                          "gte": 1992,
+                          "lte": 1997
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "aggs": {
+                "year": {
+                  "terms": {
+                    "field": "lineorder.orderdate.d_year",
+                    "order": {
+                      "_term": "asc"
+                    }
+                  },
+                  "aggs": {
+                    "s_nation": {
+                      "terms": {
+                        "field": "lineorder.supplier.s_nation",
+                        "order": {
+                          "_term": "asc"
+                        }
+                      },
+                      "aggs": {
+                        "sum_revenue": {
+                          "sum": {
+                            "field": "lineorder.lo_revenue"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sort": [
+    {
+      "lineorder.lo_revenue": {
+        "order": "desc"
+      }
+    }
+  ],
+  "size": 0
+}

@@ -1,0 +1,121 @@
+POST /customer/_search?pretty
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "term": {
+                "c_region": "AMERICA"
+              }
+            },
+            {
+              "bool": {
+                "filter": {
+                  "nested": {
+                    "inner_hits": {},
+                    "path": "lineorder",
+                    "query": {
+                      "bool": {
+                        "must": [
+                          {
+                            "bool": {
+                              "should": [
+                                {
+                                  "term": {
+                                    "lineorder.part.p_mfgr": "MFGR#1"
+                                  }
+                                },
+                                {
+                                  "term": {
+                                    "lineorder.part.p_mfgr": "MFGR#2"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "term": {
+                              "lineorder.supplier.s_region": "AMERICA"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "aggs": {
+    "c_nation": {
+      "terms": {
+        "field": "c_nation",
+        "order": {
+          "_term": "asc"
+        }
+      },
+      "aggs": {
+        "lineorder": {
+          "nested": {
+            "path": "lineorder"
+          },
+          "aggs": {
+            "only_loc": {
+              "filter": {
+                "bool": {
+                  "must": [
+                    {
+                      "bool": {
+                        "should": [
+                          {
+                            "term": {
+                              "lineorder.part.p_mfgr": "MFGR#1"
+                            }
+                          },
+                          {
+                            "term": {
+                              "lineorder.part.p_mfgr": "MFGR#2"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "term": {
+                        "lineorder.supplier.s_region": "AMERICA"
+                      }
+                    }
+                  ]
+                }
+              },
+              "aggs": {
+                "year": {
+                  "terms": {
+                    "field": "lineorder.orderdate.d_year",
+                    "order": {
+                      "_term": "asc"
+                    }
+                  },
+                  "aggs": {
+                    "profit": {
+                      "sum": {
+                        "script": "doc[\"lineorder.lo_revenue\"].value - doc[\"lineorder.lo_supplycost\"].value"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0
+}

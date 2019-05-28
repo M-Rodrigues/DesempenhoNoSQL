@@ -1,5 +1,5 @@
 const cred = require('./../credentials')
-const block_size = 500
+const block_size = 250
 
 const { Client } = require('@elastic/elasticsearch')
 const client = new Client({ node: cred.ES_HOST })
@@ -8,7 +8,8 @@ const fs = require('fs')
 const files = [
     "customers1.json",
     "customers2.json",
-    "customers3.json"
+    "customers3.json",
+    "customers10.json",
 ]
 
 const load_files = (id, files) => {
@@ -43,6 +44,7 @@ const insert_sync = (start, n, data) => {
         client.bulk({ 
             body: part 
         }, (err, res) => {
+            console.log(err)
             if (res.errors) {
                 console.log("Erro na inserção desse bloco...")
             } else {

@@ -1,0 +1,100 @@
+GET customer/_search?pretty
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "c_name": "Customer#000000001"
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET customer/_search?pretty
+{
+  "query": {
+    "nested": {
+      "path": "lineorder",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "lineorder.lo_discount": 2
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+PUT customer
+{
+  "mappings": {
+    "properties": {
+      "c_nation": {
+        "type": "text",
+        "fielddata": true
+      },
+      "c_city": {
+        "type": "text",
+        "fielddata": true
+      },
+      "lineorder": {
+        "type": "nested",
+        "properties": {
+          "supplier.s_nation": {
+            "type": "text",
+            "fielddata": true
+          },
+          "supplier.s_city": {
+            "type": "text",
+            "fielddata": true
+          },
+          "part.p_brand1": {
+            "type": "text",
+            "fielddata": true
+          },
+          "part.p_category": {
+            "type": "text",
+            "fielddata": true
+          }
+        }
+      }
+    }
+  }
+}
+
+
+PUT customer
+{
+"mappings": {
+  "properties": {
+    "c_nation": {
+      "type": "text",
+      "fielddata": true
+    },
+    "c_city": {
+      "type": "text",
+      "fielddata": true
+    },
+    "lineorder": {
+      "type": "nested"
+    }
+  }
+}
+}
+
+"mappings": {
+"properties": {
+  "s_nation": {
+    "type": "text",
+    "fileddata": true
+  }
+}
+}

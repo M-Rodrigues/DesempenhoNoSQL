@@ -1,0 +1,149 @@
+POST /customer/_search?pretty
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "term": {
+                      "c_city": "UNITED KI1"
+                    }
+                  },
+                  {
+                    "term": {
+                      "c_city": "UNITED KI5"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "filter": {
+                  "nested": {
+                    "inner_hits": {},
+                    "path": "lineorder",
+                    "query": {
+                      "bool": {
+                        "must": [
+                          {
+                            "bool": {
+                              "should": [
+                                {
+                                  "term": {
+                                    "lineorder.supplier.s_city": "UNITED KI1"
+                                  }
+                                },
+                                {
+                                  "term": {
+                                    "lineorder.supplier.s_city": "UNITED KI5"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "term": {
+                              "lineorder.orderdate.d_yearmonthnum": 199712
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "aggs": {
+    "c_city": {
+      "terms": {
+        "field": "c_city",
+        "order": {
+          "_term": "asc"
+        }
+      },
+      "aggs": {
+        "lineorder": {
+          "nested": {
+            "path": "lineorder"
+          },
+          "aggs": {
+            "only_loc": {
+              "filter": {
+                "bool": {
+                  "must": [
+                    {
+                      "bool": {
+                        "should": [
+                          {
+                            "term": {
+                              "lineorder.supplier.s_city": "UNITED KI1"
+                            }
+                          },
+                          {
+                            "term": {
+                              "lineorder.supplier.s_city": "UNITED KI5"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "term": {
+                        "lineorder.orderdate.d_yearmonthnum": 199712
+                      }
+                    }
+                  ]
+                }
+              },
+              "aggs": {
+                "year": {
+                  "terms": {
+                    "field": "lineorder.orderdate.d_year",
+                    "order": {
+                      "_term": "asc"
+                    }
+                  },
+                  "aggs": {
+                    "s_city": {
+                      "terms": {
+                        "field": "lineorder.supplier.s_city",
+                        "order": {
+                          "_term": "asc"
+                        }
+                      },
+                      "aggs": {
+                        "sum_revenue": {
+                          "sum": {
+                            "field": "lineorder.lo_revenue"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sort": [
+    {
+      "lineorder.lo_revenue": {
+        "order": "desc"
+      }
+    }
+  ],
+  "size": 0
+}
