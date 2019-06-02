@@ -14,7 +14,7 @@ GET customer/_search?pretty
 }
 
 
-PUT customer
+PUT customers
 {
   "mappings": {
     "properties": {
@@ -58,3 +58,4 @@ PUT customer
     }
   }
 }
+

@@ -1,4 +1,4 @@
-POST /customer/_search?pretty
+POST /customers/_search?pretty
 {
   "query": {
     "bool": {
@@ -9,12 +9,12 @@ POST /customer/_search?pretty
               "bool": {
                 "should": [
                   {
-                    "term": {
+                    "match": {
                       "c_city": "UNITED KI1"
                     }
                   },
                   {
-                    "term": {
+                    "match": {
                       "c_city": "UNITED KI5"
                     }
                   }
@@ -34,12 +34,12 @@ POST /customer/_search?pretty
                             "bool": {
                               "should": [
                                 {
-                                  "term": {
+                                  "match": {
                                     "lineorder.supplier.s_city": "UNITED KI1"
                                   }
                                 },
                                 {
-                                  "term": {
+                                  "match": {
                                     "lineorder.supplier.s_city": "UNITED KI5"
                                   }
                                 }
@@ -71,7 +71,7 @@ POST /customer/_search?pretty
       "terms": {
         "field": "c_city",
         "order": {
-          "_term": "asc"
+          "_key": "asc"
         }
       },
       "aggs": {
@@ -88,12 +88,12 @@ POST /customer/_search?pretty
                       "bool": {
                         "should": [
                           {
-                            "term": {
+                            "match": {
                               "lineorder.supplier.s_city": "UNITED KI1"
                             }
                           },
                           {
-                            "term": {
+                            "match": {
                               "lineorder.supplier.s_city": "UNITED KI5"
                             }
                           }
@@ -116,7 +116,7 @@ POST /customer/_search?pretty
                   "terms": {
                     "field": "lineorder.orderdate.d_year",
                     "order": {
-                      "_term": "asc"
+                      "_key": "asc"
                     },
                     "size": 10000
                   },
@@ -125,7 +125,7 @@ POST /customer/_search?pretty
                       "terms": {
                         "field": "lineorder.supplier.s_city",
                         "order": {
-                          "_term": "asc"
+                          "_key": "asc"
                         },
                         "size": 10000
                       },

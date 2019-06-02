@@ -1,4 +1,4 @@
-POST /customer/_search?pretty
+POST /customers/_search?pretty
 {
   "query": {
     "bool": {
@@ -6,7 +6,7 @@ POST /customer/_search?pretty
         "bool": {
           "must": [
             {
-              "term": {
+              "match": {
                 "c_region": "AMERICA"
               }
             },
@@ -20,12 +20,12 @@ POST /customer/_search?pretty
                       "bool": {
                         "must": [
                           {
-                            "term": {
+                            "match": {
                               "lineorder.part.p_category": "MFGR#14"
                             }
                           },
                           {
-                            "term": {
+                            "match": {
                               "lineorder.supplier.s_nation": "UNITED STATES"
                             }
                           },
@@ -60,12 +60,12 @@ POST /customer/_search?pretty
             "bool": {
               "must": [
                 {
-                  "term": {
+                  "match": {
                     "lineorder.part.p_category": "MFGR#14"
                   }
                 },
                 {
-                  "term": {
+                  "match": {
                     "lineorder.supplier.s_nation": "UNITED STATES"
                   }
                 },
@@ -85,7 +85,7 @@ POST /customer/_search?pretty
               "terms": {
                 "field": "lineorder.orderdate.d_year",
                 "order": {
-                  "_term": "asc"
+                  "_key": "asc"
                 },
                 "size": 10000
               },
@@ -94,7 +94,7 @@ POST /customer/_search?pretty
                   "terms": {
                     "field": "lineorder.supplier.s_city",
                     "order": {
-                      "_term": "asc"
+                      "_key": "asc"
                     },
                     "size": 10000
                   },
@@ -103,7 +103,7 @@ POST /customer/_search?pretty
                       "terms": {
                         "field": "lineorder.part.p_brand1",
                         "order": {
-                          "_term": "asc"
+                          "_key": "asc"
                         },
                         "size": 10000
                       },

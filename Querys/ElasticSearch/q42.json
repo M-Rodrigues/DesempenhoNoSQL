@@ -1,4 +1,4 @@
-POST /customer/_search?pretty
+POST /customers/_search?pretty
 {
   "query": {
     "bool": {
@@ -6,7 +6,7 @@ POST /customer/_search?pretty
         "bool": {
           "must": [
             {
-              "term": {
+              "match": {
                 "c_region": "AMERICA"
               }
             },
@@ -23,12 +23,12 @@ POST /customer/_search?pretty
                             "bool": {
                               "should": [
                                 {
-                                  "term": {
+                                  "match": {
                                     "lineorder.part.p_mfgr": "MFGR#1"
                                   }
                                 },
                                 {
-                                  "term": {
+                                  "match": {
                                     "lineorder.part.p_mfgr": "MFGR#2"
                                   }
                                 }
@@ -36,7 +36,7 @@ POST /customer/_search?pretty
                             }
                           },
                           {
-                            "term": {
+                            "match": {
                               "lineorder.supplier.s_region": "AMERICA"
                             }
                           },
@@ -74,12 +74,12 @@ POST /customer/_search?pretty
                   "bool": {
                     "should": [
                       {
-                        "term": {
+                        "match": {
                           "lineorder.part.p_mfgr": "MFGR#1"
                         }
                       },
                       {
-                        "term": {
+                        "match": {
                           "lineorder.part.p_mfgr": "MFGR#2"
                         }
                       }
@@ -87,7 +87,7 @@ POST /customer/_search?pretty
                   }
                 },
                 {
-                  "term": {
+                  "match": {
                     "lineorder.supplier.s_region": "AMERICA"
                   }
                 },
@@ -107,7 +107,7 @@ POST /customer/_search?pretty
               "terms": {
                 "field": "lineorder.orderdate.d_year",
                 "order": {
-                  "_term": "asc"
+                  "_key": "asc"
                 }
               },
               "aggs": {
@@ -115,7 +115,7 @@ POST /customer/_search?pretty
                   "terms": {
                     "field": "lineorder.supplier.s_nation",
                     "order": {
-                      "_term": "asc"
+                      "_key": "asc"
                     }
                   },
                   "aggs": {
@@ -123,7 +123,7 @@ POST /customer/_search?pretty
                       "terms": {
                         "field": "lineorder.part.p_category",
                         "order": {
-                          "_term": "asc"
+                          "_key": "asc"
                         }
                       },
                       "aggs": {

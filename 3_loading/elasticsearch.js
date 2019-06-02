@@ -1,15 +1,15 @@
-const cred = require('./../credentials')
+// const cred = require('./../credentials')
 const block_size = 250
 
 const { Client } = require('@elastic/elasticsearch')
-const client = new Client({ node: cred.ES_HOST })
+// const client = new Client({ node: cred.ES_HOST })
+const client = new Client({ node: 'http://192.168.91.53:9200' })
 const fs = require('fs')
 
 const files = [
     "customers1.json",
     "customers2.json",
     "customers3.json",
-    "customers10.json",
 ]
 
 const load_files = (id, files) => {
@@ -17,7 +17,8 @@ const load_files = (id, files) => {
     if (id < files.length) {
         console.log(`Importando arquivo ${files[id]} (${new Date().toUTCString()})`)
         fs.readFile(
-            "./../2_Tratamento/2_Consolidado/" + files[id]
+            // "./../2_Tratamento/2_Consolidado/" + files[id]
+            "./" + files[id]
             , 'utf8'
             , (err, data) => {
                 if (err) {
@@ -61,7 +62,7 @@ const build_bulk_body = (data) => {
         let id = parseInt(element.c_name.substring(9,18))
     
         // action description
-        body.push({ index:  { _index: 'i_customer', _id: id } })
+        body.push({ index:  { _index: 'customers', _id: id } })
         // the document
         body.push(element)
     });

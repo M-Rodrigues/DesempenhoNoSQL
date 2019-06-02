@@ -1,4 +1,4 @@
-POST /customer/_search?pretty
+POST /customers/_search?pretty
 {
   "query": {
     "bool": {
@@ -12,13 +12,19 @@ POST /customer/_search?pretty
                 {
                   "range": {
                     "lineorder.part.p_brand1": {
-                      "gte": "MFGR#2221",
+                      "gte": "MFGR#2221"
+                    }
+                  }
+                },
+                {
+                  "range": {
+                    "lineorder.part.p_brand1": {
                       "lte": "MFGR#2228"
                     }
                   }
                 },
                 {
-                  "term": {
+                  "match": {
                     "lineorder.supplier.s_region": "ASIA"
                   }
                 }
@@ -42,13 +48,19 @@ POST /customer/_search?pretty
                 {
                   "range": {
                     "lineorder.part.p_brand1": {
-                      "gte": "MFGR#2221",
+                      "gte": "MFGR#2221"
+                    }
+                  }
+                },
+                {
+                  "range": {
+                    "lineorder.part.p_brand1": {
                       "lte": "MFGR#2228"
                     }
                   }
                 },
                 {
-                  "term": {
+                  "match": {
                     "lineorder.supplier.s_region": "ASIA"
                   }
                 }

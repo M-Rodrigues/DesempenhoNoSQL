@@ -1,4 +1,4 @@
-POST /customer/_search?pretty
+POST /customers/_search?pretty
 {
   "query": {
     "bool": {
@@ -10,12 +10,12 @@ POST /customer/_search?pretty
             "bool": {
               "must": [
                 {
-                  "term": {
+                  "match": {
                     "lineorder.part.p_brand1": "MFGR#2221"
                   }
                 },
                 {
-                  "term": {
+                  "match": {
                     "lineorder.supplier.s_region": "EUROPE"
                   }
                 }
@@ -37,12 +37,12 @@ POST /customer/_search?pretty
             "bool": {
               "must": [
                 {
-                  "term": {
+                  "match": {
                     "lineorder.part.p_brand1": "MFGR#2221"
                   }
                 },
                 {
-                  "term": {
+                  "match": {
                     "lineorder.supplier.s_region": "EUROPE"
                   }
                 }

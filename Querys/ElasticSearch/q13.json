@@ -1,4 +1,4 @@
-POST /customer/_search?pretty
+POST /customers/_search?pretty
 {
   "query": {
     "bool": {
@@ -84,9 +84,3 @@ POST /customer/_search?pretty
   },
   "size": 0
 }
-
-{
-  "term": {
-    "lineorder.orderdate.d_weeknuminyear": 6
-  }
-},
